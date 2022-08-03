@@ -67,8 +67,7 @@ tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 
 print("waiting for tx to finish")
 tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
-print("deployed contract")
-print(SimpleStorage.functions.retrieve().call())
+print(f"Done! Contract deployed to {tx_receipt.contractAddress}")
 
 #working with contract
 #contract ABI = abi
@@ -78,6 +77,9 @@ simple_storage = w3.eth.contract(address = tx_receipt.contractAddress, abi = abi
 
 #call -> simulate making the call and getting a return value
 #transact -> actually make a state change
+
+print(simple_storage.functions.retrieve().call())
+
 
 store_tx = simple_storage.functions.store(88).buildTransaction(
     {
