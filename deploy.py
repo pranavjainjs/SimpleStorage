@@ -1,5 +1,6 @@
+import pkg_resources
 from web3 import Web3
-
+import json
 from solcx import compile_standard, install_solc
 import os
 from dotenv import load_dotenv
@@ -35,7 +36,7 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 network_id = 1337
-address = "0xCbEd45395d47D17298E958C39322eBdfC5745Da5"
+address = "0x571dc66A9923b3d4318c6d1ea530Db40E18f8B86"
 
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)  # we have a contract
 
@@ -54,10 +55,10 @@ transaction = SimpleStorage.constructor().buildTransaction(
         "nonce": nonce,
     }
 )
-my_pvt_key = os.getenv("my_pvt_key")
+private_key = os.getenv("my_pvt_key")
 # print(my_pvt_key)
 
-signed_txn = w3.eth.account.signTransaction(transaction, private_key=my_pvt_key)
+signed_txn = w3.eth.account.signTransaction(transaction, private_key=private_key)
 
 print("original-")
 # send the signed txn
@@ -81,13 +82,14 @@ simple_storage = w3.eth.contract(address = tx_receipt.contractAddress, abi = abi
 store_tx = simple_storage.functions.store(88).buildTransaction(
     {
         "chainId": network_id,
+        "gasPrice": w3.eth.gas_price,
         "from": address,
         "nonce": nonce + 1
     }
 )
 
 signed_store_tx = w3.eth.account.sign_transaction(
-    store_tx, private_key = my_pvt_key
+    store_tx, private_key = private_key
 )
 send_store_tx = w3.eth.send_raw_transaction(signed_store_tx.rawTransaction)
 tx_receipt = w3.eth.wait_for_transaction_receipt(send_store_tx)
