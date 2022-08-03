@@ -1,3 +1,4 @@
+from audioop import add
 import pkg_resources
 from web3 import Web3
 import json
@@ -37,6 +38,7 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 network_id = 1337
 address = "0x571dc66A9923b3d4318c6d1ea530Db40E18f8B86"
+private_key = os.getenv("private_key")
 
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)  # we have a contract
 
@@ -49,16 +51,14 @@ print(nonce)
 
 transaction = SimpleStorage.constructor().buildTransaction(
     {
-        "gasPrice": w3.eth.gas_price,
         "chainId": network_id,
+        "gasPrice": w3.eth.gas_price,
         "from": address,
         "nonce": nonce,
     }
 )
-private_key = os.getenv("my_pvt_key")
-# print(my_pvt_key)
 
-signed_txn = w3.eth.account.signTransaction(transaction, private_key=private_key)
+signed_txn = w3.eth.account.sign_transaction(transaction, private_key=private_key)
 
 print("original-")
 # send the signed txn
