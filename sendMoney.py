@@ -1,4 +1,4 @@
-# this is the script which calls functions from the smart contract dai that is deployed over Ethereum Network
+# this is the script which interacts with the smart contract dai that is deployed over Ethereum Network
 
 from web3 import Web3, HTTPProvider
 import json
