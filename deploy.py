@@ -1,7 +1,4 @@
-from audioop import add
-import pkg_resources
 from web3 import Web3
-import json
 from solcx import compile_standard, install_solc
 import os
 from dotenv import load_dotenv
@@ -37,8 +34,8 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 network_id = 1337
-address = "0x571dc66A9923b3d4318c6d1ea530Db40E18f8B86"
-private_key = os.getenv("private_key")
+address = "0xC7e616b64552a407F2988501fE8e11831054D92F"
+private_key = os.getenv("private_key_ganache")
 
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)  # we have a contract
 
@@ -79,7 +76,6 @@ simple_storage = w3.eth.contract(address = tx_receipt.contractAddress, abi = abi
 #transact -> actually make a state change
 
 print(simple_storage.functions.retrieve().call())
-
 
 store_tx = simple_storage.functions.store(88).buildTransaction(
     {
