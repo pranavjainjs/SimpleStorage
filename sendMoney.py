@@ -14,7 +14,8 @@ from web3.middleware import geth_poa_middleware
 w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 print(w3.isConnected())
-# my_account = w3.eth.account.create('blockchain is the future')
+
+# my_account = w3.eth.account.create('blockchain is the new fire')
 # print(my_account._address)
 
 myAccount_address = "0xC7e616b64552a407F2988501fE8e11831054D92F"
