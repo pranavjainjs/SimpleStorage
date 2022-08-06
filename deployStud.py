@@ -64,7 +64,6 @@ txn = aStudent.constructor().buildTransaction(
 txn_signed = w3.eth.account.sign_transaction(txn, private_key=private_key)
 
 #sending the txn
-#deployed the contract
 txn_hash = w3.eth.send_raw_transaction(txn_signed.rawTransaction)
 
 print("waiting for tx to finish")
